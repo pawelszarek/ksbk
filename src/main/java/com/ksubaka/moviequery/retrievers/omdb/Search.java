@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Search {
+class Search {
 
     @JsonProperty("Title")
     private String title;
@@ -13,11 +13,11 @@ public class Search {
     private String year;
 
 
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
-    public String getYear() {
+    String getYear() {
         return year;
     }
 

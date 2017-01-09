@@ -11,10 +11,7 @@ class OmdbSearchResponse {
     @JsonProperty("Search")
     private List<Search> searchList;
 
-    public List<Search> getSearchList() {
+    List<Search> getSearchList() {
         return searchList;
     }
-
-
-
 }

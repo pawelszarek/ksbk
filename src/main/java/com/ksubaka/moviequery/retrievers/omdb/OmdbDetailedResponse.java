@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OmdbDetailedResponse {
+class OmdbDetailedResponse {
     @JsonProperty("Title")
     private String title;
 
@@ -14,15 +14,15 @@ public class OmdbDetailedResponse {
     @JsonProperty("Director")
     private String director;
 
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
-    public String getYear() {
+    String getYear() {
         return year;
     }
 
-    public String getDirector() {
+    String getDirector() {
         return director;
     }
 }

@@ -17,13 +17,9 @@ public class Application {
             Properties properties = parseCommandLine(args);
             List<Movie> movies = retrieveMovies(properties);
             movies.forEach(movie -> System.out.println(movie.toString()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (MovieRetrieverException e) {
-            e.printStackTrace();
+        } catch (ParseException | MovieRetrieverException e) {
+            System.err.println(e.getMessage());
         }
-
-
     }
 
     static List<Movie> retrieveMovies(Properties properties) throws MovieRetrieverException {
