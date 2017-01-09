@@ -1,0 +1,8 @@
+target/
+# Ignore files created by idea
+*.iml
+*.ipr
+*.iws
+*.ids
+out/
+.idea/
