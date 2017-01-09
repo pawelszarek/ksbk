@@ -1,6 +1,6 @@
 package com.ksubaka.moviequery.model;
 
-public class Movie {
+public class Movie implements Production {
     private final String title;
     private final String year;
     private final String director;
@@ -11,15 +11,8 @@ public class Movie {
         this.director = director;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public String getDirector() {
-        return director;
+    @Override
+    public String print() {
+        return title + " " + year + " " + director;
     }
 }
