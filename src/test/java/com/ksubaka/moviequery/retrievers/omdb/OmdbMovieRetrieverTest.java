@@ -14,7 +14,7 @@ public class OmdbMovieRetrieverTest {
     public void testOmdbMovieRetriever() throws Exception {
         MovieRetrieverFactory factory = new MovieRetrieverFactory();
         MovieRetriever retriever = factory.getProperRetriever(ApiType.OMDB);
-        List<Movie> movies = retriever.retrieve("Batman");
+        List<Movie> movies = retriever.retrieve("Indiana Jones");
         Assert.assertNotNull(movies);
     }
 }

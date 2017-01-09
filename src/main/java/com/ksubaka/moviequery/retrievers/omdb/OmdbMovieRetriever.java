@@ -1,5 +1,6 @@
 package com.ksubaka.moviequery.retrievers.omdb;
 
+import com.ksubaka.moviequery.exceptions.MovieRetrieverException;
 import com.ksubaka.moviequery.model.Movie;
 import com.ksubaka.moviequery.retrievers.AbstractMovieRetriever;
 import com.mashape.unirest.http.HttpResponse;
@@ -10,23 +11,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OmdbMovieRetriever extends AbstractMovieRetriever {
-    private static final String URI = "http://omdbapi.com/?s={movie}&r=json";
+    private static final String GENERAL_SEARCH_URL = "http://omdbapi.com/?s={movie}&r=json&type=movie";
+    private static final String DETAILED_SEARCH_URL = "http://omdbapi.com/?t={title}&y={year}&r=json";
 
-    public List<Movie> retrieve(String name) {
+    public List<Movie> retrieve(String name) throws MovieRetrieverException {
+        List<Movie> movies = new ArrayList<>();
         try {
-
-
-            HttpResponse<OmdbSearchResponse> httpResponse = Unirest
-                    .get(URI)
+            HttpResponse<OmdbSearchResponse> httpSearchResponse = Unirest
+                    .get(GENERAL_SEARCH_URL)
                     .routeParam("movie", name)
                     .asObject(OmdbSearchResponse.class);
-
-            List<Movie> movies = new ArrayList<>();
-
+            for (Search search : httpSearchResponse.getBody().getSearchList()) {
+                HttpResponse<OmdbDetailedResponse> httpDetailedResponse = Unirest
+                        .get(DETAILED_SEARCH_URL)
+                        .routeParam("title", search.getTitle())
+                        .routeParam("year", search.getYear())
+                        .asObject(OmdbDetailedResponse.class);
+                movies.add(new Movie(httpDetailedResponse.getBody().getTitle(), httpDetailedResponse.getBody().getYear(), httpDetailedResponse.getBody().getDirector()));
+            }
 
         } catch (UnirestException e) {
-            e.printStackTrace();
+            throw new MovieRetrieverException(e.getMessage());
         }
-        return null;
+        return movies;
     }
 }

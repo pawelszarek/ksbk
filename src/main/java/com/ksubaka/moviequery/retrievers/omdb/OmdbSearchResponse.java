@@ -9,30 +9,12 @@ import java.util.List;
 class OmdbSearchResponse {
 
     @JsonProperty("Search")
-    private List<SearchResult> searchResults;
+    private List<Search> searchList;
 
-    public List<SearchResult> getSearchResults() {
-        return searchResults;
+    public List<Search> getSearchList() {
+        return searchList;
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class SearchResult {
 
-        @JsonProperty("Title")
-        private String title;
-
-        @JsonProperty("Year")
-        private String year;
-
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getYear() {
-            return year;
-        }
-
-    }
 
 }
