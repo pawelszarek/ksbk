@@ -1,10 +1,10 @@
 package com.ksubaka.moviequery;
 
-import com.ksubaka.moviequery.exceptions.MovieRetrieverException;
+import com.ksubaka.moviequery.exceptions.ProductionRetrieverException;
 import com.ksubaka.moviequery.model.ApiType;
 import com.ksubaka.moviequery.model.Production;
-import com.ksubaka.moviequery.retrievers.MovieRetriever;
-import com.ksubaka.moviequery.retrievers.MovieRetrieverFactory;
+import com.ksubaka.moviequery.retrievers.ProductionRetriever;
+import com.ksubaka.moviequery.retrievers.ProductionRetrieverFactory;
 import org.apache.commons.cli.*;
 
 import java.util.List;
@@ -17,17 +17,17 @@ public class Application {
             Properties properties = parseCommandLine(args);
             List<Production> productions = retrieveMovies(properties);
             productions.forEach(production -> System.out.println(production.print()));
-        } catch (ParseException | MovieRetrieverException e) {
-            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    static List<Production> retrieveMovies(Properties properties) throws MovieRetrieverException {
+    static List<Production> retrieveMovies(Properties properties) throws ProductionRetrieverException {
         ApiType apiType = ApiType.getEnum((String) properties.get("api"));
-        String movieName = (String) properties.get("movieName");
-        MovieRetrieverFactory movieRetrieverFactory = new MovieRetrieverFactory();
-        MovieRetriever movieRetriever = movieRetrieverFactory.getProperRetriever(apiType);
-        return movieRetriever.retrieve(movieName);
+        String movieName = (String) properties.get("movie");
+        ProductionRetrieverFactory productionRetrieverFactory = new ProductionRetrieverFactory();
+        ProductionRetriever productionRetriever = productionRetrieverFactory.getProperRetriever(apiType);
+        return productionRetriever.retrieve(movieName);
     }
 
 

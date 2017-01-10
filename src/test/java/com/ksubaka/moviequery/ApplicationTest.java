@@ -1,5 +1,6 @@
 package com.ksubaka.moviequery;
 
+import com.ksubaka.moviequery.exceptions.ProductionRetrieverException;
 import org.apache.commons.cli.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +15,7 @@ public class ApplicationTest {
         Application.parseCommandLine(new String[0]);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = ProductionRetrieverException.class)
     public void testCommandLineParserCriteria_unsupportedApi() throws Exception {
         String[] testArgs =
                 { "-Dapi=imdb", "-Dmovie=Indiana Jones"};

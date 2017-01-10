@@ -6,8 +6,8 @@ import com.mashape.unirest.http.Unirest;
 
 import java.io.IOException;
 
-public abstract class AbstractMovieRetriever implements MovieRetriever {
-    public AbstractMovieRetriever() {
+public abstract class AbstractProductionRetriever implements ProductionRetriever {
+    public AbstractProductionRetriever() {
         Unirest.setObjectMapper(new ObjectMapper() {
             private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
                     = new com.fasterxml.jackson.databind.ObjectMapper();
