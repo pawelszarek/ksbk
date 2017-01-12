@@ -10,6 +10,8 @@ java -jar movie-query-1.0.0.jar -Dapi=poromenos -Dmovie=mario
 
 I decided to develop this simple app with TDD approach but I also didn't use any mocking framework.
 That is the reason I could follow TDD only in the beginning and develop retrievers in a regular way.
+I decided to change implementation to use mocking framework.
+I am not a big fun of using PowerMock and this is basically the only way I could mock static methods of Unirest. So I made generic method inside AbstractProductionRetriever that is responsible for GET calls.
 
 
 ## Assumptions:

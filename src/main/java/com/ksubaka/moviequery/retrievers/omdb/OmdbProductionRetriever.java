@@ -4,8 +4,7 @@ import com.ksubaka.moviequery.exceptions.ProductionRetrieverException;
 import com.ksubaka.moviequery.model.Movie;
 import com.ksubaka.moviequery.model.Production;
 import com.ksubaka.moviequery.retrievers.AbstractProductionRetriever;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
+import com.ksubaka.moviequery.retrievers.RouteParameter;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.util.ArrayList;
@@ -18,21 +17,17 @@ public class OmdbProductionRetriever extends AbstractProductionRetriever {
     public List<Production> retrieve(String name) throws ProductionRetrieverException {
         List<Production> movies = new ArrayList<>();
         try {
-            HttpResponse<OmdbSearchResponse> httpSearchResponse = Unirest
-                    .get(GENERAL_SEARCH_URL)
-                    .routeParam("movie", name)
-                    .asObject(OmdbSearchResponse.class);
-            if (httpSearchResponse.getBody() != null && httpSearchResponse.getBody().getSearchList() != null) {
-                for (Search search : httpSearchResponse.getBody().getSearchList()) {
-                    HttpResponse<OmdbDetailedResponse> httpDetailedResponse = Unirest
-                            .get(DETAILED_SEARCH_URL)
-                            .routeParam("title", search.getTitle())
-                            .routeParam("year", search.getYear())
-                            .asObject(OmdbDetailedResponse.class);
-                    movies.add(new Movie(httpDetailedResponse.getBody().getTitle(), httpDetailedResponse.getBody().getYear(), httpDetailedResponse.getBody().getDirector()));
+            OmdbSearchResponse searchResponse = retrieveResponseBody(GENERAL_SEARCH_URL, OmdbSearchResponse.class, new RouteParameter("movie", name));
+            if (searchResponse != null && searchResponse.getSearchList() != null) {
+                for (Search search : searchResponse.getSearchList()) {
+                    OmdbDetailedResponse detailedResponse = retrieveResponseBody(DETAILED_SEARCH_URL, OmdbDetailedResponse.class,
+                            new RouteParameter("title", search.getTitle()), new RouteParameter("year", search.getYear()));
+                    if (detailedResponse == null) {
+                        throw new ProductionRetrieverException("Error accessing data. Contact OMDB/IMDB");
+                    }
+                    movies.add(new Movie(detailedResponse.getTitle(), detailedResponse.getYear(), detailedResponse.getDirector()));
+                }
             }
-            }
-
         } catch (UnirestException e) {
             throw new ProductionRetrieverException(e.getMessage());
         }

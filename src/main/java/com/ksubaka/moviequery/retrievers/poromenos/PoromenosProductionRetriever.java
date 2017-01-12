@@ -4,25 +4,21 @@ import com.ksubaka.moviequery.exceptions.ProductionRetrieverException;
 import com.ksubaka.moviequery.model.Production;
 import com.ksubaka.moviequery.model.Show;
 import com.ksubaka.moviequery.retrievers.AbstractProductionRetriever;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
+import com.ksubaka.moviequery.retrievers.RouteParameter;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PoromenosProductionRetriever extends AbstractProductionRetriever {
-    private static final String SEARCH_URL = "http://imdbapi.poromenos.org/json/?name={name}";
+    private final static String SEARCH_URL = "http://imdbapi.poromenos.org/json/?name={name}";
 
     public List<Production> retrieve(String name) throws ProductionRetrieverException {
         List<Production> series = new ArrayList<>();
         try {
-            HttpResponse<PoromenosResponse> httpSearchResponse = Unirest
-                    .get(SEARCH_URL)
-                    .routeParam("name", name)
-                    .asObject(PoromenosResponse.class);
-            if (httpSearchResponse.getBody() != null && httpSearchResponse.getBody().getShows() != null) {
-                for (com.ksubaka.moviequery.retrievers.poromenos.Show show : httpSearchResponse.getBody().getShows()) {
+            PoromenosResponse response = retrieveResponseBody(SEARCH_URL, PoromenosResponse.class, new RouteParameter("name", name));
+            if (response != null && response.getShows() != null) {
+                for (com.ksubaka.moviequery.retrievers.poromenos.Show show : response.getShows()) {
                     series.add(new Show(show.getName(), show.getYear()));
                 }
             }
@@ -31,4 +27,12 @@ public class PoromenosProductionRetriever extends AbstractProductionRetriever {
         }
         return series;
     }
+
+//    PoromenosResponse retrieveResponseBody(String name) throws UnirestException {
+//        HttpResponse<PoromenosResponse> httpSearchResponse = Unirest
+//                .get(SEARCH_URL)
+//                .routeParam("name", name)
+//                .asObject(PoromenosResponse.class);
+//        return httpSearchResponse.getBody();
+//    }
 }

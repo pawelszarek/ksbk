@@ -1,8 +1,11 @@
 package com.ksubaka.moviequery.retrievers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
 
 import java.io.IOException;
 
@@ -28,6 +31,19 @@ public abstract class AbstractProductionRetriever implements ProductionRetriever
                 }
             }
         });
+    }
+
+    public <T>T retrieveResponseBody(String URL, Class<T> type, RouteParameter... parameters) throws UnirestException {
+        GetRequest getRequest = Unirest.get(URL);
+        setRequestRouteParameters(getRequest, parameters);
+        HttpResponse<T> httpSearchResponse = getRequest.asObject(type);
+        return httpSearchResponse.getBody();
+    }
+
+    private void setRequestRouteParameters(GetRequest request, RouteParameter[] parameters) {
+        for (RouteParameter parameter : parameters) {
+            request.routeParam(parameter.getName(), parameter.getValue());
+        }
     }
 
 }
