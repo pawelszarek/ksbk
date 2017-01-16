@@ -8,12 +8,10 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class OmdbSearchResponse {
-
-    @JsonProperty("Search")
     private List<Search> searchList;
 
     @JsonCreator
-    public OmdbSearchResponse(@JsonProperty("Search") List<Search> searchList) {
+    OmdbSearchResponse(@JsonProperty("Search") List<Search> searchList) {
         this.searchList = searchList;
     }
 

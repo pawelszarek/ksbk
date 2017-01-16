@@ -8,13 +8,12 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class PoromenosResponse {
+    private List<Show> shows;
+
     @JsonCreator
     PoromenosResponse (@JsonProperty("shows") List<Show> shows) {
         this.shows = shows;
     }
-
-    @JsonProperty
-    private List<Show> shows;
 
     List<Show> getShows() {
         return shows;

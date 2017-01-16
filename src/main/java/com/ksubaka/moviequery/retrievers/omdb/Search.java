@@ -6,11 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Search {
-
-    @JsonProperty("Title")
     private String title;
-
-    @JsonProperty("Year")
     private String year;
 
     @JsonCreator

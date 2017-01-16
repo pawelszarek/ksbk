@@ -27,12 +27,4 @@ public class PoromenosProductionRetriever extends AbstractProductionRetriever {
         }
         return series;
     }
-
-//    PoromenosResponse retrieveResponseBody(String name) throws UnirestException {
-//        HttpResponse<PoromenosResponse> httpSearchResponse = Unirest
-//                .get(SEARCH_URL)
-//                .routeParam("name", name)
-//                .asObject(PoromenosResponse.class);
-//        return httpSearchResponse.getBody();
-//    }
 }
